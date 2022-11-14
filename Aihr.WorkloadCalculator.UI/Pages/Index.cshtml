@@ -1,0 +1,40 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Workload Calculator";
+}
+
+<form method="post">
+    <h2>Study Preferences</h2>
+    <p class="fw-bold">Please supply the following criteria.</p>
+
+    <p>I will be studying between <input type="date" name="PeriodStart" required="required" value="@Model.PeriodStart?.ToString("yyyy-MM-dd")" /> and <input type="date" name="PeriodEnd" required="required" value="@Model.PeriodEnd?.ToString("yyyy-MM-dd")" /> (inclusive).
+    </p>
+    <p>
+        <div>I will be able to study <input name="HoursPerDay" type="number" min="1" max="24" value="@Model.HoursPerDay" required="required" /> hours per day.</div>
+        <div>@Html.CheckBoxFor(model => model.IncludingWeekends, new { id = "weekends" }) <label for="weekends">I will be studying in the weekends too.</label></div>
+    </p>
+    
+    <div class="alert-danger">@Html.ValidationSummary()</div>
+    
+    @foreach (var schedule in Model.Schedules)
+    {
+        <div class="text-success">Period: @schedule.Period.Start.ToString("dd-MM-yyyy") thru @schedule.Period.End.ToString("dd-MM-yyyy"). Workload: @schedule.WeeklyWorkload hours per week. Curriculum: @string.Join(", ", schedule.Curriculum.Select(c => c.Name))</div>
+    }
+
+    <h2>Course Catalog</h2>
+    <p class="fw-bold">Please select your curriculum from the following courses.</p>
+
+    @foreach (var course in Model.Courses)
+    {
+        <div>
+            <input type="checkbox" id="course_@course.Id" name="CourseIds" value="@course.Id" @(Model.CourseIds.Contains(course.Id) ? "checked=\"checked\"" : "") />
+            <label for="course_@course.Id">@course.Name (@course.Duration hours)</label>
+        </div>
+    }
+
+    <p>
+        <br />
+        <input type="submit" value="Calculate Workload"/>
+    </p>
+</form>
