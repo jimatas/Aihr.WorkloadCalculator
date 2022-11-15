@@ -14,7 +14,7 @@ namespace Aihr.WorkloadCalculator.UI.Pages
         private readonly IScheduleRepository repository;
 
         public IndexModel(IWorkloadCalculator workloadCalculator, IScheduleRepository repository)
-        {   
+        {
             this.workloadCalculator = workloadCalculator;
             this.repository = repository;
         }
@@ -27,6 +27,7 @@ namespace Aihr.WorkloadCalculator.UI.Pages
         public void OnPost()
         {
             Schedules = new List<Schedule>(repository.GetAll());
+
             if (ModelState.IsValid)
             {
                 try
@@ -57,12 +58,12 @@ namespace Aihr.WorkloadCalculator.UI.Pages
         public bool IncludingWeekends { get; set; }
 
         [BindNever]
-        public IReadOnlyList<Course> Courses => CourseCatalog.Courses;
+        public IEnumerable<Course> Courses => CourseCatalog.Courses;
 
         [BindProperty]
         public IEnumerable<Guid> CourseIds { get; set; } = Array.Empty<Guid>();
 
         [BindProperty]
-        public ICollection<Schedule> Schedules { get; set; } = new HashSet<Schedule>();
+        public ICollection<Schedule> Schedules { get; set; } = new List<Schedule>();
     }
 }

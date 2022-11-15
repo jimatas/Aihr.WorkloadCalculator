@@ -15,7 +15,7 @@
         <div>@Html.CheckBoxFor(model => model.IncludingWeekends, new { id = "weekends" }) <label for="weekends">I will be studying in the weekends too.</label></div>
     </p>
     
-    <div class="alert-danger">@Html.ValidationSummary()</div>
+    <div class="text-danger" asp-validation-summary="ModelOnly"></div>
     
     @foreach (var schedule in Model.Schedules)
     {
